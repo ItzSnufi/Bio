@@ -1200,8 +1200,12 @@
                 };
             });
 
-            const bestMove = moveScores.reduce((best, move) => (move.score > best.score ? move : best), moveScores[0]);
-            applyMove(bestMove.index, aiPlayer);
+            const sortedMoves = moveScores.slice().sort((a, b) => b.score - a.score);
+            const bestMove = sortedMoves[0];
+            const shouldMakeMistake = Math.random() < 0.22 && sortedMoves.length > 1;
+            const chosenMove = shouldMakeMistake ? sortedMoves[Math.min(1, sortedMoves.length - 1)] : bestMove;
+
+            applyMove(chosenMove.index, aiPlayer);
             if (gameActive) {
                 setStatus("Your turn — play as X");
             }
