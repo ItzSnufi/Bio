@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ItzSnufi | Software & Systems Developer</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2308090c'/%3E%3Cpath d='M18 18h28v28H18z' fill='%2300ff66'/%3E%3Cpath d='M24 12h16v10H24zM24 42h16v10H24zM12 24h10v16H12zM42 24h10v16H42z' fill='%23f0f6fc'/%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -402,6 +403,251 @@
             box-shadow: 0 0 20px var(--accent-glow);
         }
 
+        .crane-loader {
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(0, 255, 102, 0.25);
+            border-radius: 20px;
+            background: rgba(8, 9, 12, 0.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+
+        body.loaded .crane-loader {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            display: none;
+        }
+
+        .crane-stage {
+            position: relative;
+            width: 112px;
+            height: 86px;
+            flex-shrink: 0;
+        }
+
+        .crane-base {
+            position: absolute;
+            left: 50%;
+            bottom: 8px;
+            width: 78px;
+            height: 10px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: linear-gradient(90deg, #374151, #1f2937);
+        }
+
+        .crane-pole {
+            position: absolute;
+            left: 50%;
+            bottom: 8px;
+            width: 6px;
+            height: 58px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: linear-gradient(180deg, #f0f6fc, #6b7280);
+        }
+
+        .crane-arm {
+            position: absolute;
+            left: 50%;
+            bottom: 58px;
+            width: 58px;
+            height: 6px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #00ff66, #7dffb1);
+            transform-origin: left center;
+            animation: crane-swing 1.2s ease-in-out infinite;
+        }
+
+        .crane-hook {
+            position: absolute;
+            left: calc(50% + 52px);
+            bottom: 58px;
+            width: 8px;
+            height: 24px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #f0f6fc, #8b949e);
+            animation: crane-drop 1.2s ease-in-out infinite;
+        }
+
+        .crane-box {
+            position: absolute;
+            left: calc(50% + 42px);
+            bottom: 34px;
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 102, 0.45);
+            background: radial-gradient(circle at 30% 30%, #7dffb1, #00ff66);
+            animation: crane-box-bob 1.2s ease-in-out infinite;
+        }
+
+        .worker {
+            position: absolute;
+            left: calc(50% - 36px);
+            bottom: 10px;
+            width: 34px;
+            height: 46px;
+            animation: worker-wave 1.2s ease-in-out infinite;
+        }
+
+        .worker-head {
+            width: 16px;
+            height: 16px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: #f7c59f;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .worker-body {
+            width: 22px;
+            height: 20px;
+            margin: 3px auto 0;
+            border-radius: 8px;
+            background: #00ff66;
+        }
+
+        .worker-arm,
+        .worker-leg {
+            position: absolute;
+            width: 4px;
+            height: 16px;
+            background: #f7c59f;
+            border-radius: 999px;
+            left: 8px;
+            top: 18px;
+        }
+
+        .worker-arm.right,
+        .worker-leg.right {
+            left: 22px;
+        }
+
+        .worker-leg {
+            top: 34px;
+            height: 12px;
+        }
+
+        .loader-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 170px;
+        }
+
+        .loader-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent-green);
+        }
+
+        .loader-message {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        @keyframes crane-swing {
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(12deg); }
+        }
+
+        @keyframes crane-drop {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        @keyframes crane-box-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        @keyframes worker-wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .game-card {
+            margin-top: 20px;
+        }
+
+        .tic-tac-toe {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+
+        .game-badge {
+            border: 1px solid rgba(0, 255, 102, 0.3);
+            background: rgba(0, 255, 102, 0.08);
+            color: var(--accent-green);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(84px, 1fr));
+            gap: 12px;
+            max-width: 360px;
+        }
+
+        .cell {
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .cell:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 102, 0.08);
+        }
+
+        .cell:disabled {
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        .btn.small {
+            flex: 0 1 auto;
+            padding: 14px 24px;
+            font-size: 1rem;
+        }
+
         footer {
             margin-top: auto;
             padding: 50px 20px;
@@ -434,6 +680,27 @@
     </style>
 </head>
 <body>
+    <div class="crane-loader" id="craneLoader" aria-label="Loading site">
+        <div class="crane-stage">
+            <div class="crane-base"></div>
+            <div class="crane-pole"></div>
+            <div class="crane-arm"></div>
+            <div class="crane-hook"></div>
+            <div class="crane-box"></div>
+            <div class="worker">
+                <div class="worker-head"></div>
+                <div class="worker-body"></div>
+                <div class="worker-arm"></div>
+                <div class="worker-arm right"></div>
+                <div class="worker-leg"></div>
+                <div class="worker-leg right"></div>
+            </div>
+        </div>
+        <div class="loader-copy">
+            <div class="loader-title">Still in progress</div>
+            <div class="loader-message">This page is not finished yet.</div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="card hero reveal">
@@ -485,14 +752,14 @@
                 <div class="award-card">
                     <div class="award-badge gold">🥇</div>
                     <div>
-                        <div class="award-title">Hamburg Jugend Coding Event</div>
+                        <div class="award-title">Hamburg Youth Coding Event</div>
                         <div class="award-rank gold"><i class="fa-solid fa-medal"></i> 1st Place Winner</div>
                     </div>
                 </div>
                 <div class="award-card">
                     <div class="award-badge">🏅</div>
                     <div>
-                        <div class="award-title">Bundeswettbewerb Coding</div>
+                        <div class="award-title">National Coding Competition</div>
                         <div class="award-rank"><i class="fa-solid fa-award"></i> 8th Place Nationally</div>
                     </div>
                 </div>
@@ -668,11 +935,31 @@
                 <button class="btn" onclick="copyDiscord()">
                     <i class="fa-brands fa-discord"></i> <span id="discordBtnText">Copy Discord</span>
                 </button>
-                <a href="tel:+4917623252817" class="btn">
-                    <i class="fa-solid fa-phone"></i> +49 176 23252817
-                </a>
             </div>
         </div>
+
+        <div class="card reveal">
+            <h3><i class="fa-solid fa-gamepad" style="color: var(--accent-green); margin-right: 12px;"></i> <span data-typewrite="Tic Tac Toe"></span></h3>
+            <div class="tic-tac-toe">
+                <div class="game-status">
+                    <span id="ttt-status">Your turn — play as X</span>
+                    <span class="game-badge">Smart AI</span>
+                </div>
+                <div class="board" role="grid" aria-label="Tic Tac Toe board">
+                    <button class="cell" data-index="0"></button>
+                    <button class="cell" data-index="1"></button>
+                    <button class="cell" data-index="2"></button>
+                    <button class="cell" data-index="3"></button>
+                    <button class="cell" data-index="4"></button>
+                    <button class="cell" data-index="5"></button>
+                    <button class="cell" data-index="6"></button>
+                    <button class="cell" data-index="7"></button>
+                    <button class="cell" data-index="8"></button>
+                </div>
+                <button class="btn small" id="ttt-reset">Restart Match</button>
+            </div>
+        </div>
+
     </div>
 
     <footer>
@@ -689,6 +976,45 @@
             "Linux & CLI Developer"
         ];
         let heroWordIndex = 0;
+
+        function animateTabTitle() {
+            const frames = [
+                "ItzSnufi | loading",
+                "ItzSnufi | loading.",
+                "ItzSnufi | loading..",
+                "ItzSnufi | loading..."
+            ];
+            let frame = 0;
+            const interval = setInterval(() => {
+                document.title = frames[frame];
+                frame = (frame + 1) % frames.length;
+            }, 450);
+
+            const finish = () => {
+                clearInterval(interval);
+                document.title = "ItzSnufi | Software & Systems Developer";
+                document.body.classList.add("loaded");
+
+                const loader = document.getElementById("craneLoader");
+                if (loader) {
+                    loader.style.opacity = "0";
+                    loader.style.visibility = "hidden";
+                    loader.style.display = "none";
+                }
+            };
+
+            if (document.readyState === "complete") {
+                setTimeout(finish, 1400);
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    setTimeout(finish, 1400);
+                }, { once: true });
+                window.addEventListener("load", () => {
+                    setTimeout(finish, 1000);
+                }, { once: true });
+            }
+        }
+        animateTabTitle();
 
         function heroTypingEffect() {
             let word = words[heroWordIndex].split("");
@@ -768,6 +1094,152 @@
                 btnText.innerText = "Copy Discord";
             }, 2000);
         }
+
+        const cells = Array.from(document.querySelectorAll(".cell"));
+        const statusEl = document.getElementById("ttt-status");
+        const resetBtn = document.getElementById("ttt-reset");
+        const winningCombos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        let board = Array(9).fill("");
+        let gameActive = true;
+        const humanPlayer = "X";
+        const aiPlayer = "O";
+
+        function setStatus(message) {
+            statusEl.textContent = message;
+        }
+
+        function checkWinner(currentBoard) {
+            return winningCombos.find((combo) => {
+                const [a, b, c] = combo;
+                return currentBoard[a] && currentBoard[a] === currentBoard[b] && currentBoard[a] === currentBoard[c];
+            });
+        }
+
+        function getEmptyIndices(currentBoard) {
+            return currentBoard.flatMap((cell, index) => (cell ? [] : [index]));
+        }
+
+        function endGame(winner) {
+            gameActive = false;
+            if (winner === humanPlayer) {
+                setStatus("You win! Nice play.");
+            } else if (winner === aiPlayer) {
+                setStatus("The AI wins. Try again.");
+            } else {
+                setStatus("It is a draw.");
+            }
+        }
+
+        function applyMove(index, player) {
+            if (!gameActive || board[index]) return false;
+
+            board[index] = player;
+            const button = cells[index];
+            button.textContent = player === humanPlayer ? "✕" : "◯";
+            button.disabled = true;
+            button.classList.add(player === humanPlayer ? "x" : "o");
+
+            const winningCombo = checkWinner(board);
+            if (winningCombo) {
+                endGame(player);
+                return true;
+            }
+
+            if (board.every((cell) => cell)) {
+                endGame(null);
+                return true;
+            }
+
+            return true;
+        }
+
+        function minimax(currentBoard, playerToMove) {
+            const winningCombo = checkWinner(currentBoard);
+            if (winningCombo) {
+                const winner = currentBoard[winningCombo[0]];
+                return winner === aiPlayer ? { score: 10 } : { score: -10 };
+            }
+
+            const emptyIndices = getEmptyIndices(currentBoard);
+            if (emptyIndices.length === 0) {
+                return { score: 0 };
+            }
+
+            const moves = [];
+            emptyIndices.forEach((index) => {
+                currentBoard[index] = playerToMove;
+                const result = minimax(currentBoard, playerToMove === humanPlayer ? aiPlayer : humanPlayer);
+                currentBoard[index] = "";
+                moves.push({ index, score: result.score });
+            });
+
+            if (playerToMove === aiPlayer) {
+                return moves.reduce((best, move) => (move.score > best.score ? move : best), moves[0]);
+            }
+
+            return moves.reduce((best, move) => (move.score < best.score ? move : best), moves[0]);
+        }
+
+        function aiMove() {
+            if (!gameActive) return;
+
+            const availableMoves = getEmptyIndices(board);
+            if (availableMoves.length === 0) return;
+
+            const moveScores = availableMoves.map((index) => {
+                const trialBoard = [...board];
+                trialBoard[index] = aiPlayer;
+                return {
+                    index,
+                    score: minimax(trialBoard, humanPlayer).score
+                };
+            });
+
+            const bestMove = moveScores.reduce((best, move) => (move.score > best.score ? move : best), moveScores[0]);
+            applyMove(bestMove.index, aiPlayer);
+            if (gameActive) {
+                setStatus("Your turn — play as X");
+            }
+        }
+
+        cells.forEach((cell) => {
+            cell.addEventListener("click", () => {
+                if (!gameActive) return;
+
+                const index = Number(cell.dataset.index);
+                if (board[index]) return;
+
+                applyMove(index, humanPlayer);
+                if (!gameActive) return;
+                if (board.every((item) => item)) {
+                    endGame(null);
+                    return;
+                }
+
+                setStatus("The AI is thinking...");
+                window.setTimeout(() => {
+                    if (gameActive) {
+                        aiMove();
+                    }
+                }, 320);
+            });
+        });
+
+        resetBtn.addEventListener("click", () => {
+            board = Array(9).fill("");
+            gameActive = true;
+            cells.forEach((cell) => {
+                cell.textContent = "";
+                cell.disabled = false;
+                cell.className = "cell";
+            });
+            setStatus("Your turn — play as X");
+        });
 
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
